@@ -1,55 +1,44 @@
-package EjercicioAlgoritmos;
-
+// Import the libraries
 import java.util.Scanner;
+import java.util.Stack;
 
-public class Valid_Parentheses {
+public class Exercise2 {
+    // Method to validate parentheses
+    public static boolean validParentheses(String s) {
+        Stack<Character> stack = new Stack<>();
 
-		public static void parenthesis_pair(String s) {
-			//Inicializacion de variables
-			int size = s.length();
-			int iter = 0;
-			int tipo1=0, tipo2=0, tipo3=0;
-			boolean state =true;
-			if(size>0 && size< 105) {	
-				while(iter<size && state == true) {
-					//Validacion inicial de paridad
-					if(!(size % 2==0)) state = false;
-					//Conteo de parentesis por parejas
-					switch(s.charAt(iter)) {
-						case '(': tipo1++;
-									break;
-						case '{': tipo2++;
-									break;
-						case '[': tipo3++;
-									break;
-						case ')': if(tipo1 ==0) state =false;
-									 tipo1--;
-									 break;
-						case '}': if(tipo2 ==0) state =false;
-									tipo2--;
-									break;
-						case ']': if(tipo3 ==0) state =false;
-									tipo3--;
-									break;
-						default: 
-								state = false;
-					}
-					iter+=1;
-				}
-				//Resultado obtenido de la funcion
-				System.out.println(state);
-			}else {
-				System.out.println("La entrada se encuentra  fuera del rango establecido");
-			}
-		}
-	
-		
-	public static void main(String[] args) {	
-		//Scanner sc = new Scanner(System.in);
-		//String s = sc.next();
-		String s = "(()[])"; //Entrada de datos estatica
-		 parenthesis_pair(s);
-		//sc.close();
-		}
+        // Iterate through each character in the string
+        for (char c : s.toCharArray()) {
+            // Push the corresponding closing bracket for each opening bracket
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (c == '[') {
+                stack.push(']');
+            }
+            // If it's a closing bracket, check if it matches the top of the stack
+            else if (stack.isEmpty() || stack.pop() != c) {
+                return false; // Return false if it doesn't match
+            }
+        }
+        // Return true if all brackets are matched correctly
+        return stack.isEmpty();
+    }
 
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a string of parentheses: ");
+        String input = scanner.nextLine();
+
+        // Check if input length is within limits
+        if (input.length() < 1 || input.length() > 104) {
+            System.out.println("Invalid input"); // Notify user of invalid input
+        } else {
+            // Validate parentheses and display result
+            boolean result = validParentheses(input);
+            System.out.println(result);
+        }
+        scanner.close(); // Close the scanner to free resources
+    }
 }
